@@ -14,6 +14,7 @@ import { getAllUsers } from "../service/user.service";
     <h4>Nombre de usuario: {{ username }}</h4>
     <h4>Email: {{ email }}</h4>
     <h4>¿Email verificado?: {{ emailVerified ? "Si" : "No" }}</h4>
+    <h4>Rol: {{ role }}</h4>
 
     <!-- All users modal -->
     <button
@@ -76,7 +77,8 @@ export default {
       username: "",
       email: "",
       emailVerified: "",
-      userData: []
+      userData: [],
+      role:''
     };
   },
   mounted() {
@@ -92,6 +94,7 @@ export default {
         this.email = keycloakData.email;
         this.emailVerified = keycloakData.email_verified;
         this.userData = await this.getAllUsers(keycloak.token);
+        this.role = keycloakData.realm_access.roles.includes('admin') ? 'admin' : 'user';
       } catch (error) {
         console.error("Error initializing Keycloak", error);
       }
